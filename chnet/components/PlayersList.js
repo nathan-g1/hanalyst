@@ -16,7 +16,6 @@ export default class PlayersList extends Component {
                     players: responseJson,
                 }, function () {
                 });
-                console.log(this.state.players);
             })
             .catch((error) => {
                 console.error(error);
