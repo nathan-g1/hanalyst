@@ -17,11 +17,7 @@ export default class AnalysisDefence extends Component {
         this.setState({ modalVisible: !this.state.modalVisible });
         return bool;
     }
-    pauseTime = () => {
-        // call a life cycle method probably on pause to stop the timer 
-        // and show a modal with a resume button and a message diaplaying 
-        // the timer has paused
-    }
+    
     renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => this.customClick({ item, index })}>
@@ -55,7 +51,7 @@ export default class AnalysisDefence extends Component {
                                     color='red'
                                 />
                             }
-                            onPress={() => this.pauseTime()}
+                            onPress={() => this.onCloseModal()}
                             title="Cancel"
                             type="outline"
                         />
