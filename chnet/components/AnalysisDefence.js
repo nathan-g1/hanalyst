@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, TouchableWithoutFeedback, View, StyleSheet, FlatList, Dimensions, Modal } from 'react-native';
+import { Text, ScrollView, Box, TouchableWithoutFeedback, View, StyleSheet, FlatList, Dimensions, Modal } from 'react-native';
 import defence from './analysisUtil/analysisDataAdditional';
+import PlayersList from './PlayersList';
+import { Button } from 'react-native-elements';
+import { Icon } from 'react-native-elements'
+
+
 
 const numColumns = 5;
 export default class AnalysisDefence extends Component {
@@ -8,8 +13,14 @@ export default class AnalysisDefence extends Component {
         super(props);
         this.state = { def: defence, eff: 0, modalVisible: false }
     }
-    onCloseModal = () => {
+    onCloseModal = (bool) => {
         this.setState({ modalVisible: !this.state.modalVisible });
+        return bool;
+    }
+    pauseTime = () => {
+        // call a life cycle method probably on pause to stop the timer 
+        // and show a modal with a resume button and a message diaplaying 
+        // the timer has paused
     }
     renderItem = ({ item, index }) => {
         return (
@@ -27,37 +38,49 @@ export default class AnalysisDefence extends Component {
     render() {
         return (
             <ScrollView>
-                <View>
-                    <Modal visible={this.state.modalVisible}>
-                        <View>
-                            <Text>who?</Text>
-                            <TouchableWithoutFeedback onPress={() => this.onCloseModal()}>
-                                <Text>Close</Text>
-                            </TouchableWithoutFeedback>
+                <Modal transparent={true} style={styles.modal} visible={this.state.modalVisible} animationType='slide'>
+                    <View style={styles.modal}>
+                        <View style={{ height: 50, alignItems: 'center' }}>
+                            <Text style={{ fontSize: 20 }}>Who?</Text>
                         </View>
-                    </Modal>
-                    <View style={styles.labelContainer}>
-                        <Text style={styles.label}>Defence:</Text>
-                        <Text style={styles.label}>Time: </Text>
-                        <Text style={styles.eff}>Effectiveness: {this.state.eff} %</Text>
+                        <View style={styles.modalTitle}>
+                            <Text style={styles.label, { fontSize: 15 }}>Player Name</Text>
+                            <Text style={styles.eff, { fontSize: 15 }}>Shirt Number</Text>
+                        </View>
+                        <PlayersList />
+                        <Button
+                            icon={
+                                <Icon
+                                    name='cancel'
+                                    color='red'
+                                />
+                            }
+                            onPress={() => this.pauseTime()}
+                            title="Cancel"
+                            type="outline"
+                        />
                     </View>
-                    <FlatList
-                        extraData={this.state}
-                        data={this.state.def}
-                        style={styles.container}
-                        renderItem={this.renderItem}
-                        numColumns={numColumns}
-                    />
+                </Modal >
+                <View style={styles.labelContainer}>
+                    <Text style={styles.label}>Defence</Text>
+                    <Text style={styles.eff}>Effectiveness: {this.state.eff}%</Text>
                 </View>
-            </ScrollView>
+                <FlatList
+                    extraData={this.state}
+                    data={this.state.def}
+                    style={styles.container}
+                    renderItem={this.renderItem}
+                    numColumns={numColumns}
+                />
+            </ScrollView >
         );
     }
     customClick = ({ item, index }) => {
         // call modal of who and where
         // think of something to undo and confirmation
+        if (!this.onCloseModal()) return;
         let { def } = this.state;
         let target = def[index];
-        this.onCloseModal();
         console.log(target);
         target.value++;
         def[index] = target;
@@ -67,7 +90,8 @@ export default class AnalysisDefence extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginVertical: 10
+        marginVertical: 10,
+        backgroundColor: 'teal'
     },
     code: {
         fontSize: 20,
@@ -77,14 +101,17 @@ const styles = StyleSheet.create({
     labelContainer: {
         justifyContent: 'space-between',
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        borderColor: 'teal',
     },
     label: {
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        paddingTop: 8
     },
     eff: {
         alignItems: 'flex-end',
-        color: 'red'
+        color: 'red',
+        paddingTop: 8
     },
     time: {
         color: 'yellow'
@@ -93,7 +120,6 @@ const styles = StyleSheet.create({
         fontSize: 10,
         alignItems: 'center',
         color: 'darkgreen'
-
     },
     attackCell: {
         backgroundColor: 'lightgrey',
@@ -108,6 +134,18 @@ const styles = StyleSheet.create({
         alignItems: 'flex-end',
         justifyContent: 'flex-end',
         backgroundColor: 'lightgreen',
-        color: 'blue',
-    }
+        color: 'black',
+    },
+    modal: {
+        padding: 2,
+        margin: 10,
+        backgroundColor: 'white',
+    },
+    modalTitle: {
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        borderColor: 'teal',
+        borderBottomWidth: 2,
+        fontSize: 30,
+    },
 });

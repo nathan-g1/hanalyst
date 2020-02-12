@@ -23,8 +23,14 @@ export default class AnalysisAttack extends Component {
             }))
         }, 1000)
     }
+    pauseTime = () => {
+        // call a life cycle method probably on pause to stop the timer 
+        // and show a modal with a resume button and a message diaplaying 
+        // the timer has paused
+    }
     onCloseModal = () => {
         this.setState({ modalVisible: !this.state.modalVisible });
+        return false;
     }
     renderItem = ({ item, index }) => {
         return (
@@ -45,12 +51,12 @@ export default class AnalysisAttack extends Component {
             <ScrollView>
                 <Modal transparent={true} style={styles.modal} visible={this.state.modalVisible} animationType='slide'>
                     <View style={styles.modal}>
-                        <View style={{ height: 50 }}>
-
+                        <View style={{ height: 50, alignItems: 'center' }}>
+                            <Text style={{ fontSize: 20 }}>Who?</Text>
                         </View>
                         <View style={styles.modalTitle}>
-                            <Text>Player Name</Text>
-                            <Text>T Shirt Number</Text>
+                            <Text style={styles.label, { fontSize: 15 }}>Player Name</Text>
+                            <Text style={styles.eff, { fontSize: 15 }}>Shirt Number</Text>
                         </View>
                         <PlayersList />
                         <Button
@@ -78,7 +84,7 @@ export default class AnalysisAttack extends Component {
                                 size={20}
                             />
                         }
-                        onPress={() => this.onCloseModal()}
+                        onPress={() => this.pauseTime()}
                         title={`${minute}:${seconds}`}
                         type="clear"
                     />
@@ -92,13 +98,13 @@ export default class AnalysisAttack extends Component {
                     renderItem={this.renderItem}
                     numColumns={numColumns}
                 />
-            </ScrollView>
+            </ScrollView >
         );
     }
     customClick = ({ item, index }) => {
         // call modal of who and where
         // think of something to undo and confirmation
-        this.onCloseModal();
+        if (!this.onCloseModal()) return;
         let { att } = this.state;
         let target = att[index];
         this.setState({
@@ -167,7 +173,10 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
     },
     modalTitle: {
-        alignItems: 'center',
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        borderColor: 'teal',
+        borderBottomWidth: 2,
         fontSize: 30,
     },
 });
