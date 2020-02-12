@@ -36,6 +36,12 @@ const attack = [
         value: 0,
     },
     {
+        id: 12,
+        code: 'HoffT',
+        desc: 'Headers off target',
+        value: 0,
+    },
+    {
         id: 6,
         code: 'OC',
         desc: 'Offsides committed',
@@ -44,7 +50,7 @@ const attack = [
     {
         id: 7,
         code: 'FK',
-        desc: 'Free Kiks received',
+        desc: 'Free Kicks received',
         value: 0,
     },
     {
