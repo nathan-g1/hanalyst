@@ -1,12 +1,30 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, TouchableWithoutFeedback, View, StyleSheet, FlatList, Dimensions } from 'react-native';
+import { Text, ScrollView, TouchableWithoutFeedback, View, StyleSheet, Modal, FlatList, Dimensions } from 'react-native';
 import attack from './analysisUtil/analysisData';
-
+import PlayersList from './PlayersList';
+import { Icon, Button } from 'react-native-elements';
 const numColumns = 5;
 export default class AnalysisAttack extends Component {
     constructor(props) {
         super(props);
-        this.state = { att: attack, eff: 0 }
+        this.state = { att: attack, eff: 0, minute: 0, seconds: 0, modalVisible: false }
+    }
+    componentDidMount() {
+        this.myInterval = setInterval(() => {
+            const { minute, seconds } = this.state;
+            if (seconds == 59) {
+                this.setState(({ seconds }) => ({
+                    seconds: 0,
+                    minute: minute + 1
+                }))
+            }
+            this.setState(({ seconds }) => ({
+                seconds: seconds + 1
+            }))
+        }, 1000)
+    }
+    onCloseModal = () => {
+        this.setState({ modalVisible: !this.state.modalVisible });
     }
     renderItem = ({ item, index }) => {
         return (
@@ -22,12 +40,50 @@ export default class AnalysisAttack extends Component {
         );
     }
     render() {
+        const { minute, seconds } = this.state;
         return (
             <ScrollView>
+                <Modal transparent={true} style={styles.modal} visible={this.state.modalVisible} animationType='slide'>
+                    <View style={styles.modal}>
+                        <View style={{ height: 50 }}>
+
+                        </View>
+                        <View style={styles.modalTitle}>
+                            <Text>Player Name</Text>
+                            <Text>T Shirt Number</Text>
+                        </View>
+                        <PlayersList />
+                        <Button
+                            buttonStyle={{ color: 'red' }}
+                            icon={
+                                <Icon
+                                    name='cancel'
+                                    color='red'
+                                />
+                            }
+                            onPress={() => this.onCloseModal()}
+                            title="Cancel"
+                            type="outline"
+                        />
+                    </View>
+                </Modal >
                 <View style={styles.labelContainer}>
                     <Text style={styles.label}>Attack</Text>
-                    <Text style={styles.label}>Time: </Text>
-                    <Text style={styles.eff}>Effectiveness: {this.state.eff} %</Text>
+                    <Button
+                        style={styles.timer}
+                        icon={
+                            <Icon
+                                name='pause'
+                                color='red'
+                                size={20}
+                            />
+                        }
+                        onPress={() => this.onCloseModal()}
+                        title={`${minute}:${seconds}`}
+                        type="clear"
+                    />
+
+                    <Text style={styles.eff}>Effectiveness: {this.state.eff}%</Text>
                 </View>
                 <FlatList
                     extraData={this.state}
@@ -42,6 +98,7 @@ export default class AnalysisAttack extends Component {
     customClick = ({ item, index }) => {
         // call modal of who and where
         // think of something to undo and confirmation
+        this.onCloseModal();
         let { att } = this.state;
         let target = att[index];
         this.setState({
@@ -55,7 +112,8 @@ export default class AnalysisAttack extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        marginVertical: 10
+        marginVertical: 10,
+        backgroundColor: 'teal'
     },
     code: {
         fontSize: 20,
@@ -65,36 +123,51 @@ const styles = StyleSheet.create({
     labelContainer: {
         justifyContent: 'space-between',
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        borderColor: 'teal',
+        borderTopWidth: 2,
     },
     label: {
-        alignItems: 'flex-start'
+        alignItems: 'flex-start',
+        paddingTop: 8
     },
     eff: {
         alignItems: 'flex-end',
-        color: 'red'
+        color: 'red',
+        paddingTop: 8
     },
-    time: {
-        color: 'yellow'
+    timer: {
+        color: 'yellow',
+        width: 40
     },
     desc: {
         fontSize: 10,
         alignItems: 'center',
         color: 'darkgreen'
-        
+
     },
     attackCell: {
         backgroundColor: 'lightgrey',
         margin: 1,
         flex: 1,
         flexDirection: 'column',
+        justifyContent: 'space-between',
         borderRadius: 3,
         height: Dimensions.get('window').width / numColumns,
     },
     valueStyle: {
         alignItems: 'flex-end',
         justifyContent: 'flex-end',
-        backgroundColor: 'lightgreen',
-        color: 'blue',
-    }
+        backgroundColor: 'lightblue',
+        color: 'black',
+    },
+    modal: {
+        padding: 2,
+        margin: 10,
+        backgroundColor: 'white',
+    },
+    modalTitle: {
+        alignItems: 'center',
+        fontSize: 30,
+    },
 });
