@@ -4,10 +4,19 @@ import attack from './analysisUtil/analysisData';
 import PlayersList from './PlayersList';
 import { Icon, Button } from 'react-native-elements';
 const numColumns = 5;
+var currentMinute = 0;
+var currentSeconds = 0;
 export default class AnalysisAttack extends Component {
     constructor(props) {
         super(props);
-        this.state = { att: attack, eff: 0, minute: 0, seconds: 0, modalVisible: false }
+        this.state = {
+            att: attack,
+            eff: 0,
+            minute: 0,
+            seconds: 0,
+            modalVisible: false,
+            pausedVisible: false,
+        }
     }
     componentDidMount() {
         this.myInterval = setInterval(() => {
@@ -23,15 +32,23 @@ export default class AnalysisAttack extends Component {
             }))
         }, 1000)
     }
+    unPauseTime = () => {
+        this.setState({ pausedVisible: !this.state.pausedVisible, minute: currentMinute, seconds: currentSeconds });
+    }
+
     pauseTime = () => {
         // call a life cycle method probably on pause to stop the timer 
         // and show a modal with a resume button and a message diaplaying 
         // the timer has paused
+        currentMinute = this.state.minute;
+        currentSeconds = this.state.seconds;
+        this.setState({ pausedVisible: !this.state.pausedVisible });
     }
     onCloseModal = () => {
         this.setState({ modalVisible: !this.state.modalVisible });
         return false;
     }
+
     renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => this.customClick({ item, index })}>
@@ -49,6 +66,18 @@ export default class AnalysisAttack extends Component {
         const { minute, seconds } = this.state;
         return (
             <ScrollView>
+                <Modal transparent={true} style={styles.modal} visible={this.state.pausedVisible} animationType='slide'>
+                    <View style={styles.modal}>
+                        <View style={{ height: 50, alignItems: 'center' }}>
+                            <Text style={{ fontSize: 20 }}>Timer has paused</Text>
+                        </View>
+                        <Button
+                            onPress={() => this.unPauseTime()}
+                            title="Resume"
+                            type="outline"
+                        />
+                    </View>
+                </Modal >
                 <Modal transparent={true} style={styles.modal} visible={this.state.modalVisible} animationType='slide'>
                     <View style={styles.modal}>
                         <View style={{ height: 50, alignItems: 'center' }}>
@@ -80,7 +109,7 @@ export default class AnalysisAttack extends Component {
                         icon={
                             <Icon
                                 name='pause'
-                                color='red'
+                                color='black'
                                 size={20}
                             />
                         }
