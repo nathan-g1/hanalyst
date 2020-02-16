@@ -44,8 +44,11 @@ export default class AnalysisAttack extends Component {
         currentSeconds = this.state.seconds;
         this.setState({ pausedVisible: !this.state.pausedVisible });
     }
-    onCloseModal = () => {
+    onCloseModal = (save) => {
         this.setState({ modalVisible: !this.state.modalVisible });
+        if(save){
+            // save content from football zone
+        }
         return false;
     }
 
@@ -87,7 +90,7 @@ export default class AnalysisAttack extends Component {
                             <Text style={styles.eff, { fontSize: 15 }}>Shirt Number</Text>
                         </View>
 
-                        <PlayersList attackDetail={"asdfasdf"} />
+                        <PlayersList onCloseModal={this.onCloseModal} />
                         <Button
                             color='red'
                             onPress={() => this.onCloseModal()}

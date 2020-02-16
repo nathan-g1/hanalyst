@@ -41,7 +41,7 @@ export default class AnalysisDefence extends Component {
                             <Text style={styles.label, { fontSize: 15 }}>Player Name</Text>
                             <Text style={styles.eff, { fontSize: 15 }}>Shirt Number</Text>
                         </View>
-                        <PlayersList />
+                        <PlayersList onCloseModal={this.onCloseModal} />
                         <Button
                             onPress={() => this.onCloseModal()}
                             title="Cancel"
