@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import { Text, View, ActivityIndicator, FlatList, Dimensions, StyleSheet } from 'react-native';
+import { Text, Modal, View, ActivityIndicator, Button, FlatList, Dimensions, StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements'
+import FootballZone from './FootballZone';
 export default class PlayersList extends Component {
     constructor(props) {
         super(props);
-        this.state = { players: [], isLoading: true };
+        this.state = { players: [], isLoading: true, showZone: false };
+        // accept time and what analysis code from both [attack and defence] using props
     }
 
     componentDidMount() {
@@ -18,9 +20,21 @@ export default class PlayersList extends Component {
                 });
             })
             .catch((error) => {
-                console.error(error);
+                throw error;
             });
-
+    }
+    sendPlayerData = (item, index) => {
+        // save selected player data to later post on game history 
+        // call Football zone
+        this.setState({ showZone: !this.state.showZone });
+        console.log(item);
+        console.log(index);
+    }
+    closeModalZone = (bool) => {
+        this.setState({ showZone: !this.state.showZone });
+        if (bool) {
+            this.props.onCloseModal();
+        }
     }
     render() {
         if (this.state.isLoading) {
@@ -30,9 +44,20 @@ export default class PlayersList extends Component {
                 </View>
             );
         }
-        return (
-            <View>
 
+        return (
+
+            <View>
+                <Modal style={styles.modal} visible={this.state.showZone} animationType='slide'>
+                    <View style={styles.modal}>
+                        <FootballZone closeModalZone={this.closeModalZone} />
+                        <Button
+                            onPress={() => this.closeModalZone()}
+                            title="Cancel"
+                            color='red'
+                        />
+                    </View>
+                </Modal >
                 {
                     this.state.players.map((l, i) => (
                         <ListItem
@@ -42,6 +67,8 @@ export default class PlayersList extends Component {
                             subtitle={l.name}
                             badge={{ value: l.tnumber, textStyle: { color: 'black', backgroundColor: 'white', fontSize: 32 } }}
                             bottomDivider
+                            chevron
+                            onPress={() => this.sendPlayerData(l, i)}
                         />
                     ))
                 }
@@ -61,5 +88,17 @@ const styles = StyleSheet.create({
     eff: {
         alignItems: 'flex-end',
         color: 'red'
+    },
+    modal: {
+        // padding: 2,
+        // margin: 90,
+        backgroundColor: 'white',
+    },
+    modalTitle: {
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        borderColor: 'teal',
+        borderBottomWidth: 2,
+        fontSize: 30,
     },
 });
