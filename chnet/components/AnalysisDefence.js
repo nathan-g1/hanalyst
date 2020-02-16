@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, Box, TouchableWithoutFeedback, View, StyleSheet, FlatList, Dimensions, Modal } from 'react-native';
+import { Text, ScrollView, Button, TouchableWithoutFeedback, View, StyleSheet, FlatList, Dimensions, Modal } from 'react-native';
 import defence from './analysisUtil/analysisDataAdditional';
 import PlayersList from './PlayersList';
-import { Button } from 'react-native-elements';
-import { Icon } from 'react-native-elements'
 
 
 
@@ -45,15 +43,9 @@ export default class AnalysisDefence extends Component {
                         </View>
                         <PlayersList />
                         <Button
-                            icon={
-                                <Icon
-                                    name='cancel'
-                                    color='red'
-                                />
-                            }
                             onPress={() => this.onCloseModal()}
                             title="Cancel"
-                            type="outline"
+                            color='red'
                         />
                     </View>
                 </Modal >
