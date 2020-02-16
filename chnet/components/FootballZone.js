@@ -24,6 +24,7 @@ export default class FootballZone extends Component {
     }
     onPress = (zoneNum) => {
         console.log(zoneNum);
+        this.props.closeModalZone(true);
     }
     render() {
         const { container, firstSection, TextStyleMiddleInside, TextStyleCornerMiddle, TextStyleCorner, TextStyleInside } = styles;
@@ -32,48 +33,48 @@ export default class FootballZone extends Component {
                 <Text>Select action zone</Text>
                 <ImageBackground source={require('../images/zonenew.png')} style={{ width: 360, height: 500 }}>
                     <View style={firstSection}>
-                        <TouchableOpacity onPress={()=>this.onPress(2)} style={TextStyleCorner}>
+                        <TouchableOpacity onPress={() => this.onPress(2)} style={TextStyleCorner}>
                             <Text color='transparent' ></Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this.onPress(1)} style={TextStyleInside}>
+                        <TouchableOpacity onPress={() => this.onPress(1)} style={TextStyleInside}>
                             <Text color='transparent' ></Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this.onPress(3)} style={TextStyleCorner}>
-                            <Text color='transparent' ></Text>
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={firstSection}>
-                        <TouchableOpacity onPress={()=>this.onPress(6)} style={TextStyleCornerMiddle}>
-                            <Text color='transparent' ></Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this.onPress(5)} style={TextStyleMiddleInside}>
-                            <Text color='transparent' ></Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this.onPress(4)} style={TextStyleCornerMiddle}>
-                            <Text color='transparent' ></Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={firstSection}>
-                        <TouchableOpacity onPress={()=>this.onPress(9)} style={TextStyleCornerMiddle}>
-                            <Text color='transparent' ></Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this.onPress(8)} style={TextStyleMiddleInside}>
-                            <Text color='transparent' ></Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this.onPress(7)} style={TextStyleCornerMiddle}>
+                        <TouchableOpacity onPress={() => this.onPress(3)} style={TextStyleCorner}>
                             <Text color='transparent' ></Text>
                         </TouchableOpacity>
                     </View>
 
                     <View style={firstSection}>
-                        <TouchableOpacity onPress={()=>this.onPress(12)} style={TextStyleCorner}>
+                        <TouchableOpacity onPress={() => this.onPress(6)} style={TextStyleCornerMiddle}>
                             <Text color='transparent' ></Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this.onPress(11)} style={TextStyleInside}>
+                        <TouchableOpacity onPress={() => this.onPress(5)} style={TextStyleMiddleInside}>
                             <Text color='transparent' ></Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={()=>this.onPress(10)} style={TextStyleCorner}>
+                        <TouchableOpacity onPress={() => this.onPress(4)} style={TextStyleCornerMiddle}>
+                            <Text color='transparent' ></Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={firstSection}>
+                        <TouchableOpacity onPress={() => this.onPress(9)} style={TextStyleCornerMiddle}>
+                            <Text color='transparent' ></Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.onPress(8)} style={TextStyleMiddleInside}>
+                            <Text color='transparent' ></Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.onPress(7)} style={TextStyleCornerMiddle}>
+                            <Text color='transparent' ></Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={firstSection}>
+                        <TouchableOpacity onPress={() => this.onPress(12)} style={TextStyleCorner}>
+                            <Text color='transparent' ></Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.onPress(11)} style={TextStyleInside}>
+                            <Text color='transparent' ></Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => this.onPress(10)} style={TextStyleCorner}>
                             <Text color='transparent' ></Text>
                         </TouchableOpacity>
                     </View>
