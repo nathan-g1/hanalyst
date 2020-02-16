@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, TouchableWithoutFeedback, View, StyleSheet, Modal, FlatList, Dimensions } from 'react-native';
+import { Text, ScrollView, TouchableWithoutFeedback, View, Button, StyleSheet, Modal, FlatList, Dimensions } from 'react-native';
 import attack from './analysisUtil/analysisData';
 import PlayersList from './PlayersList';
-import { Icon, Button } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 const numColumns = 5;
 var currentMinute = 0;
 var currentSeconds = 0;
@@ -74,7 +74,6 @@ export default class AnalysisAttack extends Component {
                         <Button
                             onPress={() => this.unPauseTime()}
                             title="Resume"
-                            type="outline"
                         />
                     </View>
                 </Modal >
@@ -87,36 +86,30 @@ export default class AnalysisAttack extends Component {
                             <Text style={styles.label, { fontSize: 15 }}>Player Name</Text>
                             <Text style={styles.eff, { fontSize: 15 }}>Shirt Number</Text>
                         </View>
-                        <PlayersList />
+
+                        <PlayersList attackDetail={"asdfasdf"} />
                         <Button
-                            buttonStyle={{ color: 'red' }}
-                            icon={
-                                <Icon
-                                    name='cancel'
-                                    color='red'
-                                />
-                            }
+                            color='red'
                             onPress={() => this.onCloseModal()}
                             title="Cancel"
-                            type="outline"
                         />
                     </View>
                 </Modal >
                 <View style={styles.labelContainer}>
                     <Text style={styles.label}>Attack</Text>
-                    <Button
-                        style={styles.timer}
-                        icon={
-                            <Icon
-                                name='pause'
-                                color='black'
-                                size={20}
-                            />
-                        }
-                        onPress={() => this.pauseTime()}
-                        title={`${minute}:${seconds}`}
-                        type="clear"
-                    />
+                    <View style={styles.timer}>
+                        <Icon
+                            name='pause'
+                            color='white'
+                            size={20}
+                        />
+                        <Button
+                            onPress={() => this.pauseTime()}
+                            title={`Time ${minute}:${seconds}`}
+                            type="clear"
+                            color='blue'
+                        />
+                    </View>
 
                     <Text style={styles.eff}>Effectiveness: {this.state.eff}%</Text>
                 </View>
@@ -172,8 +165,9 @@ const styles = StyleSheet.create({
         paddingTop: 8
     },
     timer: {
-        color: 'yellow',
-        width: 40
+        backgroundColor: 'blue',
+        flexDirection: 'row',
+        width: 90
     },
     desc: {
         fontSize: 10,
