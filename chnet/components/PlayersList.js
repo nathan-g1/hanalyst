@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Text, Modal, View, ActivityIndicator, Button, FlatList, Dimensions, StyleSheet } from 'react-native';
 import { ListItem } from 'react-native-elements'
 import FootballZone from './FootballZone';
+let zoneAndPlayerData;
 export default class PlayersList extends Component {
     constructor(props) {
         super(props);
@@ -26,14 +27,15 @@ export default class PlayersList extends Component {
     sendPlayerData = (item, index) => {
         // save selected player data to later post on game history 
         // call Football zone
+        zoneAndPlayerData = {item};
         this.setState({ showZone: !this.state.showZone });
-        console.log(item);
-        console.log(index);
+        // console.log(index);
     }
-    closeModalZone = (bool) => {
+    closeModalZone = (zoneData, bool) => {
         this.setState({ showZone: !this.state.showZone });
         if (bool) {
-            this.props.onCloseModal();
+            zoneAndPlayerData["zoneData"] = zoneData;
+            this.props.onCloseModal(zoneAndPlayerData, bool);
         }
     }
     render() {
