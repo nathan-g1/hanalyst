@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-import { Text, ScrollView, TouchableWithoutFeedback, View, Button, StyleSheet, Modal, FlatList, Dimensions } from 'react-native';
+import { Text, ScrollView, TouchableWithoutFeedback, View, Button, TouchableOpacity, StyleSheet, Modal, FlatList, Dimensions } from 'react-native';
 import attack from './analysisUtil/analysisData';
 import PlayersList from './PlayersList';
 import { Icon } from 'react-native-elements';
 const numColumns = 5;
 var currentMinute = 0;
 var currentSeconds = 0;
+var itemData = {};
 export default class AnalysisAttack extends Component {
     constructor(props) {
         super(props);
@@ -44,10 +45,19 @@ export default class AnalysisAttack extends Component {
         currentSeconds = this.state.seconds;
         this.setState({ pausedVisible: !this.state.pausedVisible });
     }
-    onCloseModal = (save) => {
+    onCloseModal = (zoneAndPlayerData, save) => {
         this.setState({ modalVisible: !this.state.modalVisible });
-        if(save){
-            // save content from football zone
+        if (save) {
+            let collectiveAnalysis = { itemData, zoneAndPlayerData }
+            console.log(collectiveAnalysis);
+            let { att } = this.state;
+            let target = att[itemData.index];
+            this.setState({
+                eff: Math.round((this.state.att[8].value * 100) / this.state.att[8].value + this.state.att[9].value)
+            });
+            target.value++;
+            att[itemData.index] = target;
+            this.setState({ att });
         }
         return false;
     }
@@ -103,15 +113,15 @@ export default class AnalysisAttack extends Component {
                     <View style={styles.timer}>
                         <Icon
                             name='pause'
-                            color='white'
+                            color='black'
                             size={20}
                         />
-                        <Button
+                        <TouchableOpacity
                             onPress={() => this.pauseTime()}
-                            title={`Time ${minute}:${seconds}`}
-                            type="clear"
-                            color='blue'
-                        />
+                            color='transparent'
+                        >
+                            <Text>{`Time ${minute}:${seconds}`}</Text>
+                        </TouchableOpacity>
                     </View>
 
                     <Text style={styles.eff}>Effectiveness: {this.state.eff}%</Text>
@@ -127,17 +137,12 @@ export default class AnalysisAttack extends Component {
         );
     }
     customClick = ({ item, index }) => {
+        const { minute, seconds } = this.state;
         // call modal of who and where
         // think of something to undo and confirmation
+        let timeVal = minute + ':' + seconds;
+        itemData = { item, index, timeVal };
         if (!this.onCloseModal()) return;
-        let { att } = this.state;
-        let target = att[index];
-        this.setState({
-            eff: Math.round((this.state.att[8].value * 100) / this.state.att[8].value + this.state.att[9].value)
-        });
-        target.value++;
-        att[index] = target;
-        this.setState({ att });
     }
 }
 const styles = StyleSheet.create({
@@ -168,9 +173,10 @@ const styles = StyleSheet.create({
         paddingTop: 8
     },
     timer: {
-        backgroundColor: 'blue',
+        backgroundColor: 'transparent',
         flexDirection: 'row',
-        width: 90
+        width: 90,
+        color: 'black'
     },
     desc: {
         fontSize: 10,
