@@ -23,8 +23,7 @@ export default class FootballZone extends Component {
         console.log(item);
     }
     onPress = (zoneNum) => {
-        console.log(zoneNum);
-        this.props.closeModalZone(true);
+        this.props.closeModalZone(zoneNum, true);
     }
     render() {
         const { container, firstSection, TextStyleMiddleInside, TextStyleCornerMiddle, TextStyleCorner, TextStyleInside } = styles;
