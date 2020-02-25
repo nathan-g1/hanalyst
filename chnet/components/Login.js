@@ -1,75 +1,101 @@
-import React, {Component} from 'react';
-import {
-  Keyboard,
-  Text,
-  View,
-  TextInput,
-  TouchableWithoutFeedback,
-  Alert,
-  KeyboardAvoidingView,
-} from 'react-native';
-import {Button} from 'react-native';
-import styles from '../design/style';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {Input} from 'react-native-elements';
-export default class Login extends Component {
-  render(h) {
-    return (
-      <KeyboardAvoidingView style={styles.containerView} behavior="padding">
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View style={styles.loginScreenContainer}>
-            <View style={styles.loginFormView}>
-              <Text style={styles.logoText}>Hosanna Analyst</Text>
-              <Input
-                placeholder='INPUT WITH ICON'
-                leftIcon={{ type: 'font-awesome', name: 'chevron-left' }}
-              />
+import React, { memo, useState } from 'react';
+import { TouchableOpacity, StyleSheet, Text, View } from 'react-native';
+import Background from './custom/Background';
+import Logo from './custom/Logo';
+import Header from './custom/Header';
+import Button from './custom/Button';
+import TextInput from './custom/TextInput';
+import BackButton from './custom/BackButton';
+import { theme } from '../core/theme';
+import { emailValidator, passwordValidator } from '../core/utils';
 
-              <Input
-                placeholder='INPUT WITH CUSTOM ICON'
-                leftIcon={
-                  <Icon
-                    name='user'
-                    size={24}
-                    color='black'
-                  />
-                }
-              />
+const LoginScreen = ({ navigation }) => {
+  const [email, setEmail] = useState({ value: '', error: '' });
+  const [password, setPassword] = useState({ value: '', error: '' });
 
-              <Input
-                placeholder='INPUT WITH ERROR MESSAGE'
-                errorStyle={{ color: 'red' }}
-                errorMessage='ENTER A VALID ERROR HERE'
-              />
-              <TextInput
-                placeholder="Username"
-                placeholderColor="#c4c3cb"
-                style={styles.loginFormTextInput}
-              />
-              <TextInput
-                placeholder="Password"
-                placeholderColor="#c4c3cb"
-                style={styles.loginFormTextInput}
-                secureTextEntry={true}
-              />
-              <Button
-                buttonStyle={styles.loginButton}
-                onPress={() => this.onLoginPress()}
-                title="Login"
-              />
-            </View>
-          </View>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    );
-  }
-  componentDidMount() {}
+  const _onLoginPressed = () => {
+    const emailError = emailValidator(email.value);
+    const passwordError = passwordValidator(password.value);
 
-  componentWillUnmount() {}
+    if (emailError || passwordError) {
+      setEmail({ ...email, error: emailError });
+      setPassword({ ...password, error: passwordError });
+      return;
+    }
 
-  onLoginPress() {}
+    navigation.navigate('Dashboard');
+  };
 
-  async onFbLoginPress() {
-    Alert.alert('welcome in! name}!');
-  }
-}
+  return (
+    <Background>
+      <BackButton goBack={() => navigation.navigate('HomeScreen')} />
+
+      <Logo />
+
+      <Header>Hosanna Analyst</Header>
+
+      <TextInput
+        label="Email"
+        returnKeyType="next"
+        value={email.value}
+        onChangeText={text => setEmail({ value: text, error: '' })}
+        error={!!email.error}
+        errorText={email.error}
+        autoCapitalize="none"
+        autoCompleteType="email"
+        textContentType="emailAddress"
+        keyboardType="email-address"
+      />
+
+      <TextInput
+        label="Password"
+        returnKeyType="done"
+        value={password.value}
+        onChangeText={text => setPassword({ value: text, error: '' })}
+        error={!!password.error}
+        errorText={password.error}
+        secureTextEntry
+      />
+
+      <View style={styles.forgotPassword}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ForgotPasswordScreen')}
+        >
+          <Text style={styles.label}>Forgot your password?</Text>
+        </TouchableOpacity>
+      </View>
+
+      <Button mode="contained" onPress={_onLoginPressed}>
+        Login
+      </Button>
+
+      <View style={styles.row}>
+        <Text style={styles.label}>Don’t have an account? </Text>
+        <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
+          <Text style={styles.link}>Sign up</Text>
+        </TouchableOpacity>
+      </View>
+    </Background>
+  );
+};
+
+const styles = StyleSheet.create({
+  forgotPassword: {
+    width: '100%',
+    alignItems: 'flex-end',
+    marginBottom: 24,
+  },
+  row: {
+    flexDirection: 'row',
+    marginTop: 4,
+  },
+  label: {
+    color: theme.colors.secondary,
+  },
+  link: {
+    fontWeight: 'bold',
+    color: theme.colors.primary,
+  },
+});
+
+export default memo(LoginScreen);
