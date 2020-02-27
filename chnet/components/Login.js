@@ -9,7 +9,7 @@ import BackButton from './custom/BackButton';
 import { theme } from '../core/theme';
 import { emailValidator, passwordValidator } from '../core/utils';
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({ navigation, displayAnalysisPage }) => {
   const [email, setEmail] = useState({ value: '', error: '' });
   const [password, setPassword] = useState({ value: '', error: '' });
 
@@ -23,7 +23,8 @@ const LoginScreen = ({ navigation }) => {
       return;
     }
 
-    navigation.navigate('Dashboard');
+    // navigation.navigate('Dashboard');
+    displayAnalysisPage();
   };
 
   return (
