@@ -14,7 +14,8 @@ import Login from './components/Login';
 Navigation.registerComponent('app', () => App);
 Navigation.registerComponent('gameRegistry', () => GameRegistry);
 Navigation.registerComponent('login', () => Login);
-Navigation.registerComponent('app', () => App);
+
+
 
 Navigation.events().registerAppLaunchedListener(() => {
     Navigation.setRoot({
@@ -24,9 +25,12 @@ Navigation.events().registerAppLaunchedListener(() => {
                 children: [
                     {
                         component: {
-                            name: 'app'
+                            name: 'login',
+                            options: {
+                                topBar: { visible: false, height: 0, }
+                            }
                         }
-                    },
+                    }
                 ]
             }
         }
