@@ -6,7 +6,9 @@ import AnalysisAttack from './components/AnalysisAttack';
 import AnalysisDefence from './components/AnalysisDefence';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button, ThemeProvider } from 'react-native-elements';
-// import {} from 'react-navigation';
+import { Navigation } from 'react-native-navigation';
+import GameRegistry from './components/GameRegistry';
+
 const theme = {
   Button: {
     raised: true,
@@ -16,18 +18,35 @@ const theme = {
   },
 };
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      display: false
+    }
+  }
+
+  goToScreen = (screenName) => {
+    Navigation.push(this.props.componentId, {
+      component: {
+        name: screenName
+      }
+    }
+    )
+    // this.setState({display: true});
+  }
+
   render() {
     return (
       <ThemeProvider theme={theme}>
+        {/* <Button title="again" /> */}
         {/* <HeaderNew />
-        <Button title="again" /> */}
-        {/* <Report /> */}
-        <Login />
-        {/* <AnalysisAttack />
-        <AnalysisDefence /> */}
+        // {/* <Report /> */}
+        {/* <Login /> */}
+        <AnalysisAttack /> 
+        <AnalysisDefence />
+        {/* <GameRegistry /> */}
+        {/* <Login displayAnalysisPage={this.displayAnalysisPage} /> */}
       </ThemeProvider>
     );
   }
 }
-// export default App;
-// import { Container, Header, Title, Content, Footer, FooterTab, Button, Left, Right, Body, Icon, Text } from 'native-base';
