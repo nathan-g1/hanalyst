@@ -52,14 +52,44 @@ export default class AnalysisAttack extends Component {
             console.log(collectiveAnalysis);
             let { att } = this.state;
             let target = att[itemData.index];
-            this.setState({
-                eff: Math.round((this.state.att[8].value * 100) / this.state.att[8].value + this.state.att[9].value)
-            });
+            let deno = this.state.att[8].value + this.state.att[9].value;
+            if (deno == 0) {
+                this.setState({
+                    eff: 0
+                });
+            } else {
+                this.setState({
+                    eff: Math.round((this.state.att[9].value * 100) / deno)
+                });
+            }
             target.value++;
             att[itemData.index] = target;
             this.setState({ att });
+            const what = collectiveAnalysis.itemData['item']['desc'];
+            const when = collectiveAnalysis.itemData['timeVal'];
+            const who = zoneAndPlayerData['item']['name'];
+            const where = zoneAndPlayerData['zoneData'];
+            const data = {
+                what: what,
+                when: when,
+                where: where,
+                who: who,
+            }
+            // call a method to send to backend
+            this.postNotation(data);
         }
         return false;
+    }
+
+    postNotation = (data) => {
+        fetch('https://hanalyst.herokuapp.com/api/notations', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
     }
 
     renderItem = ({ item, index }) => {
