@@ -47,7 +47,10 @@ export default class LoginScreen extends Component {
   goToHomePage = (screenName) => {
     Navigation.push(this.props.componentId, {
       component: {
-        name: screenName
+        name: screenName,
+        options: {
+          topBar: { visible: false, height: 0, }
+        }
       }
     })
   }
