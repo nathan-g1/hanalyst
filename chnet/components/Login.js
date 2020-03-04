@@ -59,10 +59,18 @@ export default class LoginScreen extends Component {
       body: JSON.stringify(data)
     }).then((response) => response.json())
       .then((d) => {
-        console.log('Success:', d);
         if (d['userId'] !== undefined && d['id'] !== undefined) {
           this.setState({ loading: false });
           this.goToHomePage('gameRegistry');
+          return;
+        }
+        if (d.error['statusCode'] !== undefined) {
+          if (d.error['statusCode'] === 401) {
+            this.setState({ loading: false });
+            this.setEmail({ ...email, error: 'Check your email' });
+            this.setPassword({ ...password, error: 'Check your password' });
+            return;
+          }
         }
       })
       .catch((error) => {
