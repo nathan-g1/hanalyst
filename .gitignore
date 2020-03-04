@@ -64,3 +64,5 @@ buck-out/
 *.pdf
 *.html
 *.txt
+chnet/package-lock.json
+*.mp4
