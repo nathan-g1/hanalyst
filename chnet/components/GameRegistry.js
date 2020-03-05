@@ -106,6 +106,28 @@ export default class GameRegistry extends Component {
 
     componentDidMount() {
         BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+        const url = 'https://hanalyst.herokuapp.com/api/teams';
+        let opponentItems = [];
+        return fetch(url)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                responseJson.filter((obj, i) => {
+                    opponentItems.push(
+                        {
+                            'label': obj['name'],
+                            'value': obj['id']
+                        }
+                    )
+                    console.log(opponentItems);
+                });
+                this.setState({
+                    opponent: opponentItems,
+                }, function () {
+                });
+            })
+            .catch((error) => {
+                throw error;
+            });
     }
 
     componentWillUnmount() {
