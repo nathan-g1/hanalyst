@@ -6,6 +6,7 @@ import Button from './custom/Button';
 import TextInput from './custom/TextInput';
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import { Navigation } from 'react-native-navigation';
+import RNPickerSelect from 'react-native-picker-select';
 var radio_props = [
     { label: 'Home  ', value: 0 },
     { label: 'Away', value: 1 }
