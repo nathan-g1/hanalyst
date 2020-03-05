@@ -12,6 +12,20 @@ var radio_props = [
     { label: 'Away', value: 1 }
 ];
 
+const gameType = [
+    {
+        label: 'Premier League',
+        value: 'premierleague',
+    },
+    {
+        label: 'Higher League',
+        value: 'higherleague',
+    },
+    {
+        label: 'National League',
+        value: 'nationalleague',
+    },
+];
 export default class GameRegistry extends Component {
     constructor(props) {
         super(props);
@@ -167,24 +181,53 @@ export default class GameRegistry extends Component {
                     onChangeText={text => this.setState({ refree: text })}
                     autoCapitalize="none"
                 />
-
-                <TextInput
-                    label="Game Type"
-                    returnKeyType="next"
+                <Text>Select Game Type</Text>
+                <RNPickerSelect
+                    onValueChange={(value) => { this.setState({ gameType: value }) }}
+                    items={gameType}
+                    placeholder={{
+                        label: 'Select a game type...',
+                        value: null,
+                        color: '#600EE6',
+                    }}
+                    style={{
+                        inputAndroid: {
+                            backgroundColor: '#2ecc71',
+                            borderColor: 'black',
+                            borderRadius: 4,
+                            borderWidth: 0.6,
+                            color: 'black',
+                        }
+                    }}
                     value={this.state.gameType}
-                    onChangeText={text => this.setState({ gameType: text })}
-                    autoCapitalize="none"
-                    errorText={"CECAF, Premier League, Regional Game or Other"}
+                    // useNativeAndroidPickerStyle={true}
+                    textInputProps={{ underlineColorAndroid: '#600EE6' }}
                 />
-
-                <TextInput
-                    label="Opponent Team"
-                    returnKeyType="next"
-                    value={this.state.oppoent}
-                    onChangeText={text => this.setState({ oppoent: text })}
-                    autoCapitalize="none"
+                <View paddingVertical={5} />
+                <Text>Select Opponent Team</Text>
+                <RNPickerSelect
+                    onValueChange={(value) => {
+                        this.setState({ opponentTeamSelected: value });
+                    }}
+                    items={this.state.opponent}
+                    placeholder={{
+                        label: 'Select opponent team...',
+                        value: null,
+                        color: '#600EE6',
+                    }}
+                    style={{
+                        inputAndroid: {
+                            backgroundColor: '#2ecc71',
+                            borderColor: 'black',
+                            borderRadius: 4,
+                            borderWidth: 0.6,
+                            color: 'black',
+                        }
+                    }}
+                    value={this.state.opponentTeamSelected}
+                    useNativeAndroidPickerStyle={true}
+                    textInputProps={{ underlineColorAndroid: '#600EE6' }}
                 />
-
                 <TextInput
                     label="Venue"
                     returnKeyType="next"
