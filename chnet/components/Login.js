@@ -20,7 +20,8 @@ export default class LoginScreen extends Component {
       value: '',
       error: ''
     },
-    loading: false
+    loading: false,
+    id: ''
   }
   // const[email, setEmail] = useState({ value: '', error: '' });
   // const[password, setPassword] = useState({ value: '', error: '' });
@@ -82,6 +83,9 @@ export default class LoginScreen extends Component {
     Navigation.push(this.props.componentId, {
       component: {
         name: screenName,
+        passProps: {
+          teamId: this.state.id
+        },
         options: {
           topBar: { visible: false, height: 0, }
         }
