@@ -61,7 +61,7 @@ export default class LoginScreen extends Component {
     }).then((response) => response.json())
       .then((d) => {
         if (d['userId'] !== undefined && d['id'] !== undefined) {
-          this.setState({ loading: false });
+          this.setState({ loading: false, id: d['teamId'] });
           this.goToHomePage('gameRegistry');
           return;
         }
