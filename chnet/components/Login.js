@@ -21,7 +21,7 @@ export default class LoginScreen extends Component {
       error: ''
     },
     loading: false,
-    id: ''
+    message: '',
   }
   // const[email, setEmail] = useState({ value: '', error: '' });
   // const[password, setPassword] = useState({ value: '', error: '' });
@@ -30,6 +30,9 @@ export default class LoginScreen extends Component {
   }
   setPassword = (v) => {
     this.setState({ password: v });
+  }
+  setMessage = (v) => {
+    this.setState({message: v});
   }
   _onLoginPressed = () => {
     const { email, password } = this.state;
@@ -140,6 +143,7 @@ export default class LoginScreen extends Component {
           </View>
         )}
 
+        <Text style={styles.label}>{this.state.message}</Text>
         <View style={styles.row}>
           <Text style={styles.label}>Don’t have an account? </Text>
           <TouchableOpacity onPress={() => navigation.navigate('RegisterScreen')}>
