@@ -9,7 +9,7 @@ import BackButton from './custom/BackButton';
 import { theme } from '../core/theme';
 import { emailValidator, passwordValidator } from '../core/utils';
 import { Navigation } from 'react-native-navigation';
-import axios from axios;
+import axios from 'axios';
 export default class LoginScreen extends Component {
   state = {
     email: {
