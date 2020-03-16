@@ -6,16 +6,59 @@ import PlayersList from './PlayersList';
 
 
 const numColumns = 5;
+var itemData = {};
 export default class AnalysisDefence extends Component {
     constructor(props) {
         super(props);
         this.state = { def: defence, eff: 0, modalVisible: false }
     }
-    onCloseModal = (bool) => {
+    onCloseModal = (zoneAndPlayerData, save) => {
         this.setState({ modalVisible: !this.state.modalVisible });
-        return bool;
+        if (save) {
+            let collectiveAnalysis = { itemData, zoneAndPlayerData }
+            console.log(collectiveAnalysis);
+            let { def } = this.state;
+            let target = def[itemData.index];
+            let deno = this.state.def[8].value + this.state.def[9].value;
+            if (deno == 0) {
+                this.setState({
+                    eff: 0
+                });
+            } else {
+                this.setState({
+                    eff: Math.round((this.state.def[9].value * 100) / deno)
+                });
+            }
+            target.value++;
+            def[itemData.index] = target;
+            this.setState({ def });
+            const what = collectiveAnalysis.itemData['item']['desc'];
+            const when = collectiveAnalysis.itemData['timeVal'];
+            const who = zoneAndPlayerData['item']['name'];
+            const where = zoneAndPlayerData['zoneData'];
+            const data = {
+                what: what,
+                when: when,
+                where: where,
+                who: who,
+            }
+            // call a method to send to backend
+            this.postNotation(data);
+        }
+        return false;
     }
     
+    postNotation = (data) => {
+        fetch('https://hanalyst.herokuapp.com/api/notations', {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
+    }
+
     renderItem = ({ item, index }) => {
         return (
             <TouchableWithoutFeedback onPress={() => this.customClick({ item, index })}>
