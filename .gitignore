@@ -4,6 +4,7 @@
 
 # Xcode
 #
+HAnalyst/
 build/
 *.pbxuser
 !default.pbxuser
